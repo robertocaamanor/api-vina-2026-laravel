@@ -1,0 +1,46 @@
+openapi: 3.0.3
+info:
+  title: API Viña 2026
+  version: 1.0.0
+  description: Documentación de endpoints.
+servers:
+  - url: /
+paths:
+  /api/vina-2026/parrilla:
+    get:
+      summary: Obtiene la parrilla completa
+      operationId: getParrilla
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/vina-2026/dia/{dia}:
+    get:
+      summary: Obtiene la programación de un día
+      operationId: getDia
+      parameters:
+        - name: dia
+          in: path
+          required: true
+          schema:
+            type: string
+          example: Domingo
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        '404':
+          description: Día no encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
