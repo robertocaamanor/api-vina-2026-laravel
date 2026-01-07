@@ -4,7 +4,7 @@ API REST desarrollada en Laravel 9 para consultar la programación y competencia
 
 ## 🎵 Características
 
-- **Autenticación JWT** (JSON Web Tokens)
+- **Autenticación JWT** (JSON Web Tokens) requerida para todos los endpoints
 - **Festival de Viña del Mar 2026**: Acceso protegido con JWT
 - **Festival del Huaso de Olmué 2026**: Acceso protegido con JWT
 - **Parrilla completa** de artistas por día
@@ -140,12 +140,22 @@ Authorization: Bearer {token}
 
 ## 🎭 Festival de Viña del Mar 2026
 
-### 📌 Rutas Públicas (No requieren autenticación)
+### � Rutas Protegidas (Requieren autenticación JWT)
+
+Todas las rutas del Festival de Viña del Mar requieren incluir el token JWT en los headers:
+```
+Authorization: Bearer {token}
+```
 
 #### Obtener Parrilla Completa
 Devuelve toda la información del festival, incluyendo programación, competencias y animadores.
 
 **Endpoint:** `GET /api/vina-2026/parrilla`
+
+**Headers:**
+```
+Authorization: Bearer {token}
+```
 
 **Response:**
 ```json
@@ -177,6 +187,11 @@ Devuelve toda la información del festival, incluyendo programación, competenci
 Obtiene la programación de un día específico.
 
 **Endpoint:** `GET /api/vina-2026/dia/{dia}`
+
+**Headers:**
+```
+Authorization: Bearer {token}
+```
 
 **Parámetros:**
 - `{dia}`: Nombre del día (domingo, lunes, martes, miércoles, jueves, viernes)
@@ -211,6 +226,11 @@ Obtiene la programación de un día específico.
 Lista todos los participantes de la competencia folclórica.
 
 **Endpoint:** `GET /api/vina-2026/competencia-folclorica`
+
+**Headers:**
+```
+Authorization: Bearer {token}
+```
 
 **Response:**
 ```json
@@ -255,6 +275,11 @@ Lista todos los participantes de la competencia folclórica.
 Lista todos los participantes de la competencia internacional.
 
 **Endpoint:** `GET /api/vina-2026/competencia-internacional`
+
+**Headers:**
+```
+Authorization: Bearer {token}
+```
 
 **Response:**
 ```json
@@ -418,14 +443,23 @@ Authorization: Bearer {token}
 
 ### Con cURL
 
-#### Viña - Obtener parrilla completa:
+#### Viña - Login y obtener parrilla completa:
 ```bash
-curl -X GET http://localhost:8000/api/vina-2026/parrilla
+# 1. Login
+TOKEN=$(curl -X POST http://localhost:8000/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"email":"admin@example.com","password":"password"}' \
+  | jq -r '.access_token')
+
+# 2. Obtener parrilla
+curl -X GET http://localhost:8000/api/vina-2026/parrilla \
+  -H "Authorization: Bearer $TOKEN"
 ```
 
 #### Viña - Obtener programación del martes:
 ```bash
-curl -X GET http://localhost:8000/api/vina-2026/dia/martes
+curl -X GET http://localhost:8000/api/vina-2026/dia/martes \
+  -H "Authorization: Bearer $TOKEN"
 ```
 
 #### Olmué - Login y obtener parrilla:
@@ -444,10 +478,31 @@ curl -X GET http://localhost:8000/api/olmue-2026/parrilla \
 ### Con JavaScript (Fetch API)
 
 ```javascript
-// Viña - Parrilla completa
-fetch('http://localhost:8000/api/vina-2026/parrilla')
-  .then(response => response.json())
-  .then(data => console.log(data));
+// Viña - Con autenticación
+// 1. Login
+fetch('http://localhost:8000/api/auth/login', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    email: 'admin@example.com',
+    password: 'password'
+  })
+})
+.then(response => response.json())
+.then(data => {
+  const token = data.access_token;
+  
+  // 2. Obtener parrilla de Viña
+  return fetch('http://localhost:8000/api/vina-2026/parrilla', {
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  });
+})
+.then(response => response.json())
+.then(data => console.log(data));
 
 // Olmué - Con autenticación
 // 1. Login
@@ -481,10 +536,22 @@ fetch('http://localhost:8000/api/auth/login', {
 ```python
 import requests
 
-# Viña - Parrilla completa
-response = requests.get('http://localhost:8000/api/vina-2026/parrilla')
-data = response.json()
-print(data)
+# Viña - Con autenticación
+# 1. Login
+login_response = requests.post(
+    'http://localhost:8000/api/auth/login',
+    json={'email': 'admin@example.com', 'password': 'password'}
+)
+token = login_response.json()['access_token']
+
+# 2. Obtener parrilla de Viña
+headers = {'Authorization': f'Bearer {token}'}
+vina_response = requests.get(
+    'http://localhost:8000/api/vina-2026/parrilla',
+    headers=headers
+)
+vina_data = vina_response.json()
+print(vina_data)
 
 # Olmué - Con autenticación
 # 1. Login
