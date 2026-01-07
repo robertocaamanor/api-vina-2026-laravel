@@ -5,7 +5,55 @@ info:
   description: Documentación de endpoints.
 servers:
   - url: /
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
 paths:
+  /api/auth/login:
+    post:
+      summary: Login (JWT)
+      operationId: login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+      responses:
+        '200':
+          description: Token JWT
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  access_token:
+                    type: string
+                  token_type:
+                    type: string
+                  expires_in:
+                    type: integer
+        '401':
+          description: Unauthorized
+  /api/auth/me:
+    get:
+      summary: Usuario autenticado
+      operationId: me
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: OK
   /api/vina-2026/parrilla:
     get:
       summary: Obtiene la parrilla completa
