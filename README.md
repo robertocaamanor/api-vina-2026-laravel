@@ -5,7 +5,7 @@ API REST desarrollada en Laravel 9 para consultar la programación y competencia
 ## 🎵 Características
 
 - **Autenticación JWT** (JSON Web Tokens)
-- **Festival de Viña del Mar 2026**: Acceso público
+- **Festival de Viña del Mar 2026**: Acceso protegido con JWT
 - **Festival del Huaso de Olmué 2026**: Acceso protegido con JWT
 - **Parrilla completa** de artistas por día
 - **Competencias Folclóricas e Internacionales**
