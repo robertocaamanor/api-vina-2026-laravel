@@ -14,6 +14,8 @@ Route::prefix('auth')->group(function () {
 
 Route::get('/vina-2026/parrilla', [VinaController::class, 'getParrilla']);
 Route::get('/vina-2026/dia/{dia}', [VinaController::class, 'getDia']);
+Route::get('/vina-2026/competencia-folclorica', [VinaController::class, 'competenciaFolclorica']);
+Route::get('/vina-2026/competencia-internacional', [VinaController::class, 'competenciaInternacional']);
 
 // Rutas protegidas por JWT para Festival de Olmué 2026
 Route::middleware('auth:api')->group(function () {

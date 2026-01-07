@@ -67,6 +67,11 @@ paths:
             application/json:
               schema:
                 type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
         '401':
           description: Unauthenticated
   /api/vina-2026/dia/{dia}:
@@ -89,6 +94,11 @@ paths:
             application/json:
               schema:
                 type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
         '401':
           description: Unauthenticated
         '404':
@@ -98,8 +108,68 @@ paths:
               schema:
                 type: object
                 properties:
+                  success:
+                    type: boolean
                   error:
                     type: string
+  /api/vina-2026/competencia-folclorica:
+    get:
+      summary: Obtiene la competencia folclórica de Viña 2026
+      operationId: getVinaCompetenciaFolclorica
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        pais:
+                          type: string
+                        artista:
+                          type: string
+                        cancion:
+                          type: string
+        '401':
+          description: Unauthenticated
+  /api/vina-2026/competencia-internacional:
+    get:
+      summary: Obtiene la competencia internacional de Viña 2026
+      operationId: getVinaCompetenciaInternacional
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        pais:
+                          type: string
+                        artista:
+                          type: string
+                        cancion:
+                          type: string
+        '401':
+          description: Unauthenticated
   /api/olmue-2026/parrilla:
     get:
       summary: Obtiene la parrilla completa del Festival de Olmué 2026

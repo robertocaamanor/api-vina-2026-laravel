@@ -18,39 +18,58 @@ class VinaController extends Controller
         "programacion" => [
             [
                 "dia" => "Domingo", 
-                "fecha" => "22 de febrero", 
-                "cantantes" => ["Gloria Estefan", "Matteo Bocelli"], 
-                "humorista" => "Stefan Kramer"
+                "fecha" => "2026-02-22", 
+                "artistas" => [
+                    ['nombre' => 'Gloria Estefan', 'tipo' => 'Música'],
+                    ['nombre' => 'Matteo Bocelli', 'tipo' => 'Música'],
+                    ['nombre' => 'Stefan Kramer', 'tipo' => 'Humor']
+                ]
             ],
             [
                 "dia" => "Lunes", 
-                "fecha" => "23 de febrero", 
-                "cantantes" => ["Pet Shop Boys", "Bomba Estéreo"], 
-                "humorista" => "Rodrigo Villegas"
+                "fecha" => "2026-02-23", 
+                "artistas" => [
+                    ['nombre' => 'Pet Shop Boys', 'tipo' => 'Música'],
+                    ['nombre' => 'Bomba Estéreo', 'tipo' => 'Música'],
+                    ['nombre' => 'Rodrigo Villegas', 'tipo' => 'Humor']
+                ]
             ],
             [
                 "dia" => "Martes", 
-                "fecha" => "24 de febrero", 
-                "cantantes" => ["Jesse & Joy", "NMIXX"], 
-                "humorista" => "Esteban Düch"
+                "fecha" => "2026-02-24", 
+                "artistas" => [
+                    ['nombre' => 'Jesse & Joy', 'tipo' => 'Música'],
+                    ['nombre' => 'NMIXX', 'tipo' => 'Música'],
+                    ['nombre' => 'Esteban Düch', 'tipo' => 'Humor']
+                ]
             ],
             [
                 "dia" => "Miércoles", 
-                "fecha" => "25 de febrero", 
-                "cantantes" => ["Juanes", "Ke Personajes"], 
-                "humorista" => "Asskha Sumathra"
+                "fecha" => "2026-02-25", 
+                "artistas" => [
+                    ['nombre' => 'Juanes', 'tipo' => 'Música'],
+                    ['nombre' => 'Ke Personajes', 'tipo' => 'Música'],
+                    ['nombre' => 'Asskha Sumathra', 'tipo' => 'Humor']
+                ]
             ],
             [
                 "dia" => "Jueves", 
-                "fecha" => "26 de febrero", 
-                "cantantes" => ["Mon Laferte", "Yandel Sinfónico"], 
-                "humorista" => "Piare con Pe"
+                "fecha" => "2026-02-26", 
+                "artistas" => [
+                    ['nombre' => 'Mon Laferte', 'tipo' => 'Música'],
+                    ['nombre' => 'Yandel Sinfónico', 'tipo' => 'Música'],
+                    ['nombre' => 'Piare con Pe', 'tipo' => 'Humor']
+                ]
             ],
             [
                 "dia" => "Viernes", 
-                "fecha" => "27 de febrero", 
-                "cantantes" => ["Paulo Londra", "Pablo Chill-E", "Milo J"], 
-                "humorista" => "Pastor Rocha"
+                "fecha" => "2026-02-27", 
+                "artistas" => [
+                    ['nombre' => 'Paulo Londra', 'tipo' => 'Música'],
+                    ['nombre' => 'Pablo Chill-E', 'tipo' => 'Música'],
+                    ['nombre' => 'Milo J', 'tipo' => 'Música'],
+                    ['nombre' => 'Pastor Rocha', 'tipo' => 'Humor']
+                ]
             ]
         ],
         "competencia_folclorica" => [
@@ -73,7 +92,10 @@ class VinaController extends Controller
 
     public function getParrilla()
     {
-        return response()->json($this->festivalData);
+        return response()->json([
+            'success' => true,
+            'data' => $this->festivalData
+        ], 200);
     }
 
     public function getDia($dia)
@@ -83,9 +105,31 @@ class VinaController extends Controller
         });
 
         if (!$resultado) {
-            return response()->json(['error' => 'Día no encontrado'], 404);
+            return response()->json([
+                'success' => false,
+                'error' => 'Día no encontrado'
+            ], 404);
         }
 
-        return response()->json($resultado);
+        return response()->json([
+            'success' => true,
+            'data' => $resultado
+        ], 200);
+    }
+
+    public function competenciaFolclorica()
+    {
+        return response()->json([
+            'success' => true,
+            'data' => $this->festivalData['competencia_folclorica']
+        ], 200);
+    }
+
+    public function competenciaInternacional()
+    {
+        return response()->json([
+            'success' => true,
+            'data' => $this->festivalData['competencia_internacional']
+        ], 200);
     }
 }
