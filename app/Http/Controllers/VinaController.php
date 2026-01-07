@@ -6,6 +6,11 @@ use Illuminate\Http\Request;
 
 class VinaController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+    }
+
     private $festivalData = [
         "nombre" => "Festival Internacional de la Canción de Viña del Mar",
         "edicion" => "LXV (65ª)",
