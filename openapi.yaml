@@ -100,3 +100,71 @@ paths:
                 properties:
                   error:
                     type: string
+  /api/olmue-2026/parrilla:
+    get:
+      summary: Obtiene la parrilla completa del Festival de Olmué 2026
+      operationId: getOlmueParrilla
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      nombre:
+                        type: string
+                      ubicacion:
+                        type: string
+                      animadores:
+                        type: array
+                        items:
+                          type: string
+                      programacion:
+                        type: array
+                        items:
+                          type: object
+                      competencia_folclorica:
+                        type: array
+                        items:
+                          type: object
+                      jurado:
+                        type: array
+                        items:
+                          type: string
+        '401':
+          description: Unauthenticated
+  /api/olmue-2026/competencia:
+    get:
+      summary: Obtiene solo la competencia folclórica del Festival de Olmué 2026
+      operationId: getOlmueCompetencia
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        titulo:
+                          type: string
+                        interprete:
+                          type: string
+        '401':
+          description: Unauthenticated
