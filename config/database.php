@@ -2,6 +2,22 @@
 
 use Illuminate\Support\Str;
 
+$normalizeEnvString = function ($value, string $default): string {
+    if (is_array($value)) {
+        $first = reset($value);
+
+        return is_string($first) && $first !== '' ? $first : $default;
+    }
+
+    if ($value === null) {
+        return $default;
+    }
+
+    $value = (string) $value;
+
+    return $value !== '' ? $value : $default;
+};
+
 return [
 
     /*
@@ -46,11 +62,11 @@ return [
         'mysql' => [
             'driver' => 'mysql',
             'url' => env('DB_URL'),
-            'host' => env('DB_HOST', '127.0.0.1'),
-            'port' => env('DB_PORT', '3306'),
-            'database' => env('DB_DATABASE', 'laravel'),
-            'username' => env('DB_USERNAME', 'root'),
-            'password' => env('DB_PASSWORD', ''),
+            'host' => $normalizeEnvString(env('DB_HOST'), '127.0.0.1'),
+            'port' => $normalizeEnvString(env('DB_PORT'), '3306'),
+            'database' => $normalizeEnvString(env('DB_DATABASE'), 'laravel'),
+            'username' => $normalizeEnvString(env('DB_USERNAME'), 'root'),
+            'password' => $normalizeEnvString(env('DB_PASSWORD'), ''),
             'unix_socket' => env('DB_SOCKET', ''),
             'charset' => env('DB_CHARSET', 'utf8mb4'),
             'collation' => env('DB_COLLATION', 'utf8mb4_unicode_ci'),
@@ -66,11 +82,11 @@ return [
         'mariadb' => [
             'driver' => 'mariadb',
             'url' => env('DB_URL'),
-            'host' => env('DB_HOST', '127.0.0.1'),
-            'port' => env('DB_PORT', '3306'),
-            'database' => env('DB_DATABASE', 'laravel'),
-            'username' => env('DB_USERNAME', 'root'),
-            'password' => env('DB_PASSWORD', ''),
+            'host' => $normalizeEnvString(env('DB_HOST'), '127.0.0.1'),
+            'port' => $normalizeEnvString(env('DB_PORT'), '3306'),
+            'database' => $normalizeEnvString(env('DB_DATABASE'), 'laravel'),
+            'username' => $normalizeEnvString(env('DB_USERNAME'), 'root'),
+            'password' => $normalizeEnvString(env('DB_PASSWORD'), ''),
             'unix_socket' => env('DB_SOCKET', ''),
             'charset' => env('DB_CHARSET', 'utf8mb4'),
             'collation' => env('DB_COLLATION', 'utf8mb4_unicode_ci'),
